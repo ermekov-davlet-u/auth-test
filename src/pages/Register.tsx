@@ -17,10 +17,10 @@ function Register() {
     const navigate = useNavigate();
 
 
-    const onFinish = async (values: {
+    const register = async (values: {
         username: string,
         password: string
-    }) => {
+        }) => {
         const res = await fetch("http://localhost:8080/register", {
             method: 'POST',
             headers: {
@@ -31,14 +31,9 @@ function Register() {
         if(res.error){
             alert(res.error)
         }
-
         navigate("/login", { state: { mess: res.message } })
-
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
 
     return ( 
         <>
@@ -54,38 +49,28 @@ function Register() {
                     <NavLink to={"/login"} ><Button type="link">Войти</Button></NavLink>
                 </p>
                 <Form
-                    name="basic"
-                    labelCol={{
-                        span: 8,
-                    }}
-                    wrapperCol={{
-                        span: 6,
-                    }} 
                     initialValues={{
                     }}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
+                    onFinish={register}
                     autoComplete="off">
                     <Form.Item
-                        label="Username"
+                        label="Имя пользователя"
                         name="username"
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Введите имя пользователя!',
                         },
-                        ]}
-                        
-                    >
+                        ]}>
                         <Input name='username'/>
                     </Form.Item>
                     <Form.Item
-                        label="Password"
+                        label="Пароль"
                         name="password"
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your password!',
+                            message: 'Введите пароль!',
                         },
                         ]}
                     >

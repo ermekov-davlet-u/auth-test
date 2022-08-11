@@ -13,20 +13,18 @@ function Main() {
     const { fetchApi } = http()
  
     const getUser = async function(){
-        const user = await fetch("http://localhost:8080/about", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${store.authToken}`,
-            },
-        }).then(response => response.json());
-
-        if(user.error) return
+        const user: {
+            data: any,
+            error: string
+        } = await fetchApi("about")
 
         store.newUser(user.data)
     }
 
     useEffect(() => {
-        getUser()
+        if(store.authToken){
+            getUser()
+        }
     },[])
 
     return ( 

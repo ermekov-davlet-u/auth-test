@@ -21,7 +21,7 @@ function Login() {
 
     const mess = location.state?.mess || ""
 
-    const onFinish = async(values: any) => {
+    const logining = async(values: any) => {
         const res = await fetch("http://localhost:8080/login", {
             method: 'POST',
             headers: {
@@ -34,9 +34,8 @@ function Login() {
         if(res.error) {
             alert(res.error);
         }
-        console.log(res.token);
-        
         store.newAuthToken(res.token)
+        alert("Вы вошли в аккаунт");
 
     };
 
@@ -47,66 +46,55 @@ function Login() {
                 Страница входа
             </Header>
             <Content
-            style={{
-                padding: '50px',
-            }}>
-            <p>
-                <NavLink to={"/register"} ><Button type="link">Регистрация</Button></NavLink>
+                style={{
+                    padding: '50px',
+                }}>
+                <p>
+                    <NavLink to={"/register"} ><Button type="link">Регистрация</Button></NavLink>
+                    {
+                        store.authToken && <NavLink to={"/"} ><Button type="link">На главную</Button></NavLink>
+                    }
+                </p>
                 {
-                    store.authToken && <NavLink to={"/"} ><Button type="link">На главную</Button></NavLink>
+                    mess && <Text type="success">Вы успешно зарегистрировались</Text>
                 }
-            </p>
-            {
-                mess && <Text type="success">Вы успешно зарегистрировались</Text>
-            }
-            <Form
-                name="basic"
-                    labelCol={{
-                        span: 8,
-                    }}
-                    wrapperCol={{
-                        span: 6,
-                    }} 
+                <Form
                     initialValues={{}}
-                    onFinish={onFinish}
+                    onFinish={logining}
                     autoComplete="off">
                     <Form.Item
-                        label="Username"
-                        name="username"
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Please input your username!',
-                        },
-                        ]}
-                        
-                    >
+                    label="Имя пользователя"
+                    name="username"
+                    rules={[
+                    {
+                        required: true,
+                        message: 'Введите имя пользователя!',
+                    },
+                    ]}>
                         <Input name='username'/>
                     </Form.Item>
                     <Form.Item
-                        label="Password"
+                        label="Пароль"
                         name="password"
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your password!',
+                            message: 'Введите пароль!',
                         },
-                        ]}
-                    >
+                        ]}>
                         <Input.Password name='password' />
-                    </Form.Item>
-                    <Form.Item
-                        wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                        }}
-                    >
+                        </Form.Item>
+                        <Form.Item
+                            wrapperCol={{
+                            offset: 8,
+                            span: 16,
+                            }}>
                         <Button type="primary" htmlType="submit">
                             Регистрация
                         </Button>
                     </Form.Item>
                 </Form>
-        </Content>
+            </Content>
         </Layout>
      );
 }
